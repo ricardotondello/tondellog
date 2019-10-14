@@ -12,6 +12,9 @@ def init_args():
 
     parser_output = subparsers.add_parser("output", help = "Output the changelog file")
     parser_output.add_argument("file", nargs='?', default="./CHANGELOG.md", help="The file to output the changelog")
+    parser_output.add_argument("branch1", nargs='?', default="master", help="Branch to campare")
+    parser_output.add_argument("branch2", nargs='?', default="develop", help="Branch base")
+    
     return parser
 
 
@@ -23,7 +26,7 @@ def main():
         cfg.save()
     elif args.command == 'output':
         cfg = Config.load()
-        gen = ChangeLogGenerator.from_config(cfg, output=args.file)
+        gen = ChangeLogGenerator.from_config(cfg, output=args.file, branch1=args.branch1, branch2=args.branch2)
         gen.generate()
     else:
         parser.print_help()

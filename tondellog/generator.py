@@ -39,7 +39,7 @@ class ChangeLogGenerator(object):
     CHANGE_ITEM_TEMPLATE='''    * [{salt_id}] - {title} ({author}) 
 {message}'''
 
-    def __init__(self, host, group, project, user=None, password=None, private_token=None, output='CHANGELOG.md'):
+    def __init__(self, host, group, project, user=None, password=None, private_token=None, output='CHANGELOG.md', branch1='master', branch2='develop'):
         self.host = host
         self.user = user
         self.password = password
@@ -47,15 +47,19 @@ class ChangeLogGenerator(object):
         self.group = group
         self.project = project
         self.output = output
+        self.branch1 = branch1
+        self.branch2 = branch2
 
     @classmethod
-    def from_config(cls, config, output='CHANGELOG.md'):
+    def from_config(cls, config, output='CHANGELOG.md', branch1='master', branch2='develop'):
         return ChangeLogGenerator(
             host = config.host,
             private_token = config.private_token,
             group = config.group,
             project = config.project,
             output = output,
+            branch1=branch1,
+            branch2=branch2,
         )
 
     def generate(self):
@@ -74,7 +78,7 @@ class ChangeLogGenerator(object):
             print("Project in group %s not found" % self.group)
             return
 
-        result = p.repository_compare('master', 'develop')
+        result = p.repository_compare(self.branch1, self.branch2)
 
         breaking_changes = []
         big_features = []
