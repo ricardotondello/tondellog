@@ -128,9 +128,12 @@ class ChangeLogGenerator(object):
             tests='\n'.join(tests),
             undefined='\n'.join(undefined))
 
-        with open(self.output, 'w+') as out:
-            out.write(changelog)
-            print(f"Changelog is generated to '{self.output}' success.")
+        if self.output == "FILESTREAM":
+            print(changelog)
+        else:
+            with open(self.output, 'w+') as out:
+                out.write(changelog)
+                print(f"Changelog is generated to '{self.output}' success.")
 
     def gen_change_item(self, commit):
         salt_id_start = "id: #"

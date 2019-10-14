@@ -11,7 +11,7 @@ def init_args():
     subparsers.add_parser("init", help="Init the config file in './tondellog.config'")
 
     parser_output = subparsers.add_parser("output", help = "Output the changelog file")
-    parser_output.add_argument("--file", nargs='?', default="./CHANGELOG.md", help="The file to output the changelog")
+    parser_output.add_argument("--file", nargs='?', default="./CHANGELOG.md", help="The file to output the changelog. Send 'FILESTREAM' to recive string format")
     parser_output.add_argument("--branch1", nargs='?', default="master", help="Branch to campare")
     parser_output.add_argument("--branch2", nargs='?', default="develop", help="Branch base")
 
@@ -20,7 +20,7 @@ def init_args():
     parser_output2.add_argument("--group", nargs='?', help="Project group")
     parser_output2.add_argument("--project", nargs='?', help="Project name")
     parser_output2.add_argument("--private_token", nargs='?', help="Private Token")
-    parser_output2.add_argument("--file", nargs='?', default="./CHANGELOG.md", help="The file to output the changelog")
+    parser_output2.add_argument("--file", nargs='?', default="./CHANGELOG.md", help="The file to output the changelog. Send 'FILESTREAM' to recive string format")
     parser_output2.add_argument("--branch1", nargs='?', default="master", help="Branch to campare")
     parser_output2.add_argument("--branch2", nargs='?', default="develop", help="Branch base")
 
