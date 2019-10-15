@@ -36,7 +36,7 @@ class ChangeLogGenerator(object):
 {undefined}
 '''
 
-    CHANGE_ITEM_TEMPLATE='''    * [{salt_id}] - {title} ({author}) 
+    CHANGE_ITEM_TEMPLATE='''* **{salt_id}** - {title} ({author}) 
 {message}'''
 
     def __init__(self, host, group, project, user=None, password=None, private_token=None, output='CHANGELOG.md', branch1='master', branch2='develop'):
@@ -145,7 +145,7 @@ class ChangeLogGenerator(object):
         title=commit["title"]
         commit_message = commit_message.replace(title + '\n\n', '').replace('\n', ' ').replace(f"{salt_id_start}{salt_id}", '').strip()
         if commit_message:
-            commit_message = "      * " + commit_message + '\n'
+            commit_message = "  * " + commit_message + '\n'
 
         return self.CHANGE_ITEM_TEMPLATE.format(
                     salt_id = salt_id,
