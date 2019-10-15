@@ -1,19 +1,21 @@
 import gitlab
 from datetime import date
+import textwrap 
 
 class ChangeLogGenerator(object):
     MAIN_TEMPLATE='''# {project} - {group}
 
-## [{release_name}] - {date_today}
+## **{release_name}** - {date_today}
 
 ### Major
+
 * Breaking Changes
 
-    {breaking_changes}
+{breaking_changes}
 
 * Big Features
-    
-    {big_features}
+
+{big_features}
 
 ### Features
 
@@ -71,6 +73,7 @@ class ChangeLogGenerator(object):
         p = None
 
         for pp in pl:
+
             if pp.namespace['name'] == self.group:
                 p = pp
                 break
@@ -98,20 +101,26 @@ class ChangeLogGenerator(object):
             if idx > 0:
                 prefixo = commit_message[0: idx]
         
-            mensagem_formatada = self.gen_change_item(commit) 
-            if prefixo == "break:":
-                breaking_changes.append(mensagem_formatada)
-            elif prefixo == "big:":
-                big_features.append(mensagem_formatada)
-            elif prefixo == "feat:":
+            if prefixo == "break":
+                mensagem_formatada = self.gen_change_item(commit, '    ')
+                breaking_changes.append('  ' + mensagem_formatada)
+            elif prefixo == "big":
+                mensagem_formatada = self.gen_change_item(commit, '    ')
+                big_features.append('  ' + mensagem_formatada)
+            elif prefixo == "feat":
+                mensagem_formatada = self.gen_change_item(commit)
                 features.append(mensagem_formatada)
-            elif prefixo == "fix:":
+            elif prefixo == "fix":
+                mensagem_formatada = self.gen_change_item(commit)
                 bug_fixes.append(mensagem_formatada)
-            elif prefixo == "ci:":
+            elif prefixo == "ci":
+                mensagem_formatada = self.gen_change_item(commit)
                 ci_cds.append(mensagem_formatada)
-            elif prefixo == "test:":
+            elif prefixo == "test":
+                mensagem_formatada = self.gen_change_item(commit)
                 tests.append(mensagem_formatada)
             else:
+                mensagem_formatada = self.gen_change_item(commit)
                 undefined.append(mensagem_formatada)
 
         #write changelog
@@ -135,7 +144,7 @@ class ChangeLogGenerator(object):
                 out.write(changelog)
                 print(f"Changelog is generated to '{self.output}' success.")
 
-    def gen_change_item(self, commit):
+    def gen_change_item(self, commit, str_avanco = "  "):
         salt_id_start = "id: #"
         salt_id = "299206-1"
         commit_message = commit["message"]
@@ -145,7 +154,7 @@ class ChangeLogGenerator(object):
         title=commit["title"]
         commit_message = commit_message.replace(title + '\n\n', '').replace('\n', ' ').replace(f"{salt_id_start}{salt_id}", '').strip()
         if commit_message:
-            commit_message = "  * " + commit_message + '\n'
+            commit_message = str_avanco + "* " + commit_message + '\n'
 
         return self.CHANGE_ITEM_TEMPLATE.format(
                     salt_id = salt_id,
