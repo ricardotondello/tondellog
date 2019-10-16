@@ -98,6 +98,7 @@ class ChangeLogGenerator(object):
                 continue
             idx = commit_message.find(":")
             
+            prefixo = ""
             if idx > 0:
                 prefixo = commit_message[0: idx]
         
