@@ -141,7 +141,7 @@ class ChangeLogGenerator(object):
         if self.output == "FILESTREAM":
             print(changelog)
         else:
-            with open(self.output, 'w+') as out:
+            with open(self.output, 'w+', encoding='utf-8') as out:
                 out.write(changelog)
                 print(f"Changelog is generated to '{self.output}' success.")
 
